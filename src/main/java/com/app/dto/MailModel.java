@@ -6,24 +6,16 @@ import java.util.Map;
 
 public class MailModel {
 
-    private String from;
-    private String to;
+    private String toEmail;
     private String name;
-    private String subject;
-    private String content;
     private PipelineModel[] pipelines;
+    private PipelineMetricsModel[] pipelineMetrics;
     private Map<String, String> model;
-	public String getFrom() {
-		return from;
+	public String getToEmail() {
+		return toEmail;
 	}
-	public void setFrom(String from) {
-		this.from = from;
-	}
-	public String getTo() {
-		return to;
-	}
-	public void setTo(String to) {
-		this.to = to;
+	public void setToEmail(String toEmail) {
+		this.toEmail = toEmail;
 	}
 	public String getName() {
 		return name;
@@ -31,37 +23,27 @@ public class MailModel {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public String getSubject() {
-		return subject;
-	}
-	public void setSubject(String subject) {
-		this.subject = subject;
-	}
-	public String getContent() {
-		return content;
-	}
-	public void setContent(String content) {
-		this.content = content;
-	}
-	public Map<String, String> getModel() {
-		return model;
-	}
-	
-	
 	public PipelineModel[] getPipelines() {
 		return pipelines;
 	}
 	public void setPipelines(PipelineModel[] pipelines) {
 		this.pipelines = pipelines;
 	}
+	public PipelineMetricsModel[] getPipelineMetrics() {
+		return pipelineMetrics;
+	}
+	public void setPipelineMetrics(PipelineMetricsModel[] pipelineMetrics) {
+		this.pipelineMetrics = pipelineMetrics;
+	}
+	public Map<String, String> getModel() {
+		return model;
+	}
 	public void setModel(Map<String, String> model) {
 		this.model = model;
 	}
 	@Override
 	public String toString() {
-		return "MailModel [from=" + from + ", to=" + to + ", name=" + name + ", subject=" + subject + ", content="
-				+ content + ", pipelines=" + Arrays.toString(pipelines) + ", model=" + model + "]";
+		return "MailModel [toEmail=" + toEmail + ", name=" + name + ", pipelines=" + Arrays.toString(pipelines)
+				+ ", pipelineMetrics=" + Arrays.toString(pipelineMetrics) + ", model=" + model + "]";
 	}
-    
-    
 }

@@ -26,34 +26,14 @@
     </tr>
     <tr>
         <td bgcolor="#f4f5f4" style="padding: 30px 30px 30px 30px;">
-            <p>Dear ${name},</p>
-            <p>${content}</p>
-            
-            <table border="1" cellspacing="0" cellpadding="6">
-			    <tr class="tableHeader">
-			        <td>Pipeline Name</td>
-			        <td>Start Time</td>
-			        <td>End Time</td>
-			        <td>Result</td>
-			        <td>Error %</td>
-			    </tr>
-			    <#foreach pipeline in pipelines>                  
-			        <tr class="tableBody">
-			            <td>${pipeline.name}</td>
-			            <td>${pipeline.start}</td>
-			            <td>${pipeline.end}</td>
-			            <td>${pipeline.status}</td>
-			            <td>${pipeline.error}</td>
-			        </tr>
-			    </#foreach>                             
-			</table>
-            <p><a href="#">For more details click here</a></p>
+            <p>Dear Team,</p>
+            <p>The workflow : ${name} has started.</p>
         </td>
     </tr>
     <tr>
         <td bgcolor="#777777" style="padding: 30px 30px 30px 30px; color:white">
             <p>Thanks</p>
-            <p>Super Streamers</p>
+            <p>Streamset Orchestration Team</p>
         </td>
     </tr>
 </table>
