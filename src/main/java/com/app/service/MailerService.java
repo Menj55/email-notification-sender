@@ -1,75 +1,61 @@
 package com.app.service;
 
 import java.io.IOException;
-import java.util.Date;
-import java.util.Properties;
-
-import javax.mail.Message;
+import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
+import java.util.Map;
 import javax.mail.MessagingException;
-import javax.mail.Multipart;
-import javax.mail.PasswordAuthentication;
-import javax.mail.Session;
-import javax.mail.Transport;
-import javax.mail.internet.AddressException;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
-import javax.mail.internet.MimeMultipart;
 
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 
-import com.app.dto.MailReq;
+import com.app.dto.MailModel;
+
+import freemarker.template.Configuration;
+import freemarker.template.Template;
+import freemarker.template.TemplateException;
 
 @Service
 public class MailerService {
 	
-	@Value("${spring.mail.properties.mail.smtp.auth}")
-	private String auth;
-	
-	@Value("${spring.mail.host}")
-	private String host;
-	
-	@Value("${spring.mail.password}")
-	private String password;
-	
-	@Value("${spring.mail.port}")
-	private String port;
-	
-	@Value("${spring.mail.username}")
-	private String username;
-	
-	@Value("${spring.mail.properties.mail.smtp.starttls.enable}")
-	private String starttls;
-	
-	public void sendmail(MailReq mailre) throws AddressException, MessagingException, IOException {
-		   
-		System.out.println(host + username + port + password);
-			Properties props = new Properties();
-		   props.put("mail.smtp.auth", auth);
-		   props.put("mail.smtp.starttls.enable", starttls);
-		   props.put("mail.smtp.host", host);
-		   props.put("mail.smtp.port", port);
-		   
-		   Session session = Session.getInstance(props, new javax.mail.Authenticator() {
-		      protected PasswordAuthentication getPasswordAuthentication() {
-		         return new PasswordAuthentication(username, password);
-		      }
-		   });
-		   Message msg = new MimeMessage(session);
-		   msg.setFrom(new InternetAddress(username, false));
+	@Autowired
+    private JavaMailSender emailSender;
 
-		   msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(mailre.getTo()));
-		   msg.setSubject(mailre.getSubject());
-		   msg.setContent(mailre.getBody(), "text/html");
-		   msg.setSentDate(new Date());
+    @Autowired
+    @Qualifier("emailConfigBean")
+    private Configuration emailConfig;
 
-		   MimeBodyPart messageBodyPart = new MimeBodyPart();
-		   messageBodyPart.setContent(mailre.getBody(), "text/html");
 
-		   Multipart multipart = new MimeMultipart();
-		   multipart.addBodyPart(messageBodyPart);
-		   msg.setContent(multipart);
-		   Transport.send(msg);   
-		}
+    public void sendEmail(MailModel mailModel) throws MessagingException, IOException, TemplateException {
+
+        Map model = new HashMap();
+        model.put("name", mailModel.getName());
+        model.put("content", mailModel.getContent());
+        model.put("pipelines", mailModel.getPipelines());
+
+        mailModel.setModel(model);
+
+        MimeMessage message = emailSender.createMimeMessage();
+        MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(message, 
+        		MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED, 
+        		StandardCharsets.UTF_8.name());
+        
+        Template template = emailConfig.getTemplate("email.ftl");
+        String html = FreeMarkerTemplateUtils.processTemplateIntoString(template, 
+        		mailModel.getModel());
+
+        mimeMessageHelper.setTo(mailModel.getTo());
+        mimeMessageHelper.setText(html, true);
+        mimeMessageHelper.setSubject(mailModel.getSubject());
+        mimeMessageHelper.setFrom(mailModel.getFrom());
+
+
+        emailSender.send(message);
+
+    }
 }
