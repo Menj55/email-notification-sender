@@ -18,9 +18,9 @@
 </head>
 <body style="margin: 0; padding: 0;">
 
-<table align="center" border="0" cellpadding="0" cellspacing="0" width="600" style="border-collapse: collapse;">
+<table align="center" border="0" cellpadding="0" cellspacing="0" width="1000" style="border-collapse: collapse;">
     <tr>
-        <td align="center" bgcolor="#26abff" style="padding: 20px 0 20px 0;">
+        <td align="center" bgcolor="#26abff" style="padding: 3px 0 3px 0;">
             <p style="font-size: 16pt; color: white;">Streamset Orcherstation Report</p>
         </td>
     </tr>
@@ -54,7 +54,7 @@
         </td>
     </tr>
     <tr>
-        <td bgcolor="#777777" style="padding: 30px 30px 30px 30px; color:white">
+        <td bgcolor="#777777" style="padding: 0 0 0 30px; color:white">
             <p>Thanks</p>
             <p>Streamset Orchestration Team</p>
         </td>
