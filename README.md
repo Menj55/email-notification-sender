@@ -1,1 +1,1 @@
-# streamset-orchestrator-notifier
+This service sends email notifications
